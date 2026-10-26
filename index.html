@@ -17,7 +17,7 @@
   .bpl b{color:#fff;font-weight:800}
   .x{opacity:.5;font-size:.8rem}
   header h1{font-size:.98rem;font-weight:650;margin-top:9px}
-  header p{font-size:.72rem;opacity:.6;margin-top:2px}
+  header p{font-size:.72rem;color:#e8eef399;margin-top:2px}
   model-viewer{width:100%;height:100%;--poster-color:transparent;--progress-bar-color:var(--bleu)}
   .aide{pointer-events:none;position:fixed;top:108px;left:50%;transform:translateX(-50%);font-size:.74rem;background:#ffffff17;padding:6px 12px;border-radius:999px;z-index:2;white-space:nowrap;transition:opacity .6s}
   .bas{position:fixed;left:0;right:0;bottom:0;padding:10px 12px 20px;z-index:2;background:linear-gradient(#0a121b00,#0a121bf5 35%)}
@@ -34,13 +34,13 @@
 <header>
   <div class="marques"><span class="badge icaro">ICARO</span><span class="x">×</span><span class="badge bpl"><b>BONE</b>PRINT LAB</span></div>
   <h1>Planification PSI du rachis lombaire</h1>
-  <p>L1 – L3 · guides de visée pédiculaire patient-spécifiques</p>
+  <p><span style="color:#ece0c4">■ L1</span>&nbsp; <span style="color:#e2aa80">■ L2</span>&nbsp; <span style="color:#96ba8c">■ L3</span> · guides de visée pédiculaire patient-spécifiques</p>
 </header>
 <div class="aide" id="aide">☝️ Un doigt : tourner · Deux doigts : zoomer</div>
 
 <model-viewer id="mv" src="g1t1.glb" alt="Vertèbres L1 à L3 avec guides PSI et trajectoires de visée"
   camera-controls touch-action="none" auto-rotate auto-rotate-delay="2500" rotation-per-second="16deg"
-  interaction-prompt="none" shadow-intensity="0.8" shadow-softness="1" exposure="1.1" tone-mapping="neutral"
+  interaction-prompt="none" shadow-intensity="0.6" shadow-softness="1" exposure="0.95" tone-mapping="neutral"
   environment-image="neutral" camera-orbit="35deg 75deg auto"
   min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 180deg auto"
   ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" ar-placement="floor">
@@ -51,7 +51,7 @@
   <div class="toggles">
     <button class="t on" id="bG"><i style="background:var(--bleu)"></i>Guides</button>
     <button class="t on" id="bT"><i style="background:var(--rouge)"></i>Trajectoires</button>
-    <button class="t on" id="bO"><i style="background:#f0e6d0"></i>Os transparent</button>
+    <button class="t on" id="bO"><i style="background:linear-gradient(90deg,#ece0c4,#e2aa80,#96ba8c)"></i>Os transparent</button>
   </div>
   <button id="ar">📱 Placer dans la pièce (réalité augmentée)</button>
   <div class="credit">Dr M. F. Djidi · Chirurgie orthopédique · EHS Ben Aknoun · Alger</div>
@@ -62,9 +62,10 @@
   const st={g:true,t:true,o:true};
   const fichier=()=>`g${+st.g}t${+st.t}.glb`;
   function osMat(){
-    const m=mv.model&&mv.model.materials.find(x=>x.name==='os'); if(!m)return;
-    if(st.o){m.setAlphaMode('BLEND');m.pbrMetallicRoughness.setBaseColorFactor([0.94,0.90,0.82,0.45]);}
-    else{m.setAlphaMode('OPAQUE');m.pbrMetallicRoughness.setBaseColorFactor([0.94,0.90,0.82,1]);}
+    if(!mv.model)return;
+    mv.model.materials.filter(x=>x.name.startsWith('os')).forEach(m=>{
+      const c=m.pbrMetallicRoughness.baseColorFactor.slice(0,3);
+      m.setAlphaMode(st.o?'BLEND':'OPAQUE'); m.pbrMetallicRoughness.setBaseColorFactor([...c, st.o?0.72:1]);});
   }
   function bascule(btn,cle,recharge){
     btn.onclick=()=>{st[cle]=!st[cle];btn.classList.toggle('on',st[cle]);btn.classList.toggle('off',!st[cle]);
