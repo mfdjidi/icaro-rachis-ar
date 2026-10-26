@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>ICARO · Guides PSI rachis en réalité augmentée</title>
+<script type="module" src="model-viewer.min.js"></script>
+<style>
+  :root{--bleu:#14aaeb;--fond:#0d1620}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:radial-gradient(circle at 50% 40%,#1c2b3a,var(--fond));color:#e8eef3;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+  header{position:fixed;top:0;left:0;right:0;padding:14px 16px 10px;z-index:2;background:linear-gradient(#0d1620ee,#0d162000)}
+  header h1{font-size:1.05rem;font-weight:700;letter-spacing:.02em}
+  header h1 span{color:var(--bleu)}
+  header p{font-size:.78rem;opacity:.7;margin-top:2px}
+  model-viewer{width:100%;height:100%;--poster-color:transparent;--progress-bar-color:var(--bleu)}
+  .barre{position:fixed;left:0;right:0;bottom:0;padding:12px 14px 22px;display:flex;gap:10px;justify-content:center;z-index:2;background:linear-gradient(#0d162000,#0d1620f2)}
+  button{font:inherit;font-size:.92rem;font-weight:600;border:none;border-radius:999px;padding:12px 18px;cursor:pointer}
+  #toggle{background:#ffffff1f;color:#fff;border:1.5px solid var(--bleu)}
+  #toggle.off{border-color:#ffffff55;opacity:.8}
+  #ar{background:var(--bleu);color:#fff;box-shadow:0 4px 18px #14aaeb66}
+  .aide{position:fixed;top:86px;left:50%;transform:translateX(-50%);font-size:.76rem;background:#ffffff14;padding:6px 12px;border-radius:999px;z-index:2;white-space:nowrap;transition:opacity .6s}
+  .legende{position:fixed;right:12px;top:70px;font-size:.72rem;z-index:2;display:none}
+  .legende i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  @media (min-width:700px){.legende{display:block}.aide{top:80px}}
+</style>
+</head>
+<body>
+<header>
+  <h1><span>ICARO</span> · Planification PSI du rachis lombaire</h1>
+  <p>L1 – L3 · guides de visée patient-spécifiques · BonePrint Lab</p>
+</header>
+<div class="aide" id="aide">☝️ Tournez avec un doigt · zoomez avec deux</div>
+<div class="legende"><div><i style="background:#ebe2cd"></i>Vertèbres</div><div style="margin-top:4px"><i style="background:#14aaeb"></i>Guides PSI</div></div>
+
+<model-viewer id="mv" src="rachis_guides.glb" alt="Vertèbres L1 à L3 avec guides PSI"
+  camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="0" rotation-per-second="18deg"
+  interaction-prompt="none" shadow-intensity="1" shadow-softness="0.8" exposure="1.05"
+  environment-image="neutral" camera-orbit="35deg 75deg auto" min-camera-orbit="auto auto 5%"
+  ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" ar-placement="floor">
+  <button slot="ar-button" style="display:none"></button>
+</model-viewer>
+
+<div class="barre">
+  <button id="toggle">Masquer les guides</button>
+  <button id="ar">📱 Voir en réalité augmentée</button>
+</div>
+
+<script>
+  const mv=document.getElementById('mv'),t=document.getElementById('toggle'),arBtn=document.getElementById('ar');
+  let guides=true;
+  t.onclick=()=>{guides=!guides;mv.src=guides?'rachis_guides.glb':'rachis.glb';
+    t.textContent=guides?'Masquer les guides':'Afficher les guides';t.classList.toggle('off',!guides)};
+  arBtn.onclick=()=>{ if(mv.canActivateAR){mv.activateAR()} else {alert("La réalité augmentée n'est pas disponible sur cet appareil.\nVous pouvez toujours manipuler le modèle en 3D.")} };
+  mv.addEventListener('load',()=>{ if(!mv.canActivateAR) arBtn.textContent='📱 RA non disponible ici'; });
+  ['pointerdown','touchstart'].forEach(e=>mv.addEventListener(e,()=>{document.getElementById('aide').style.opacity=0},{once:true}));
+</script>
+</body>
+</html>
