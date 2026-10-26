@@ -8,8 +8,8 @@
 <style>
   :root{--bleu:#14aaeb;--fond:#0d1620}
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;background:radial-gradient(circle at 50% 40%,#1c2b3a,var(--fond));color:#e8eef3;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden}
-  header{position:fixed;top:0;left:0;right:0;padding:14px 16px 10px;z-index:2;background:linear-gradient(#0d1620ee,#0d162000)}
+  html,body{height:100%;touch-action:none;overscroll-behavior:none;background:radial-gradient(circle at 50% 40%,#1c2b3a,var(--fond));color:#e8eef3;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+  header{pointer-events:none;position:fixed;top:0;left:0;right:0;padding:14px 16px 10px;z-index:2;background:linear-gradient(#0d1620ee,#0d162000)}
   header h1{font-size:1.05rem;font-weight:700;letter-spacing:.02em}
   header h1 span{color:var(--bleu)}
   header p{font-size:.78rem;opacity:.7;margin-top:2px}
@@ -19,8 +19,8 @@
   #toggle{background:#ffffff1f;color:#fff;border:1.5px solid var(--bleu)}
   #toggle.off{border-color:#ffffff55;opacity:.8}
   #ar{background:var(--bleu);color:#fff;box-shadow:0 4px 18px #14aaeb66}
-  .aide{position:fixed;top:86px;left:50%;transform:translateX(-50%);font-size:.76rem;background:#ffffff14;padding:6px 12px;border-radius:999px;z-index:2;white-space:nowrap;transition:opacity .6s}
-  .legende{position:fixed;right:12px;top:70px;font-size:.72rem;z-index:2;display:none}
+  .aide{pointer-events:none;position:fixed;top:86px;left:50%;transform:translateX(-50%);font-size:.76rem;background:#ffffff14;padding:6px 12px;border-radius:999px;z-index:2;white-space:nowrap;transition:opacity .6s}
+  .legende{pointer-events:none;position:fixed;right:12px;top:70px;font-size:.72rem;z-index:2;display:none}
   .legende i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
   @media (min-width:700px){.legende{display:block}.aide{top:80px}}
 </style>
@@ -34,7 +34,7 @@
 <div class="legende"><div><i style="background:#ebe2cd"></i>Vertèbres</div><div style="margin-top:4px"><i style="background:#14aaeb"></i>Guides PSI</div></div>
 
 <model-viewer id="mv" src="rachis_guides.glb" alt="Vertèbres L1 à L3 avec guides PSI"
-  camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="0" rotation-per-second="18deg"
+  camera-controls touch-action="none" auto-rotate auto-rotate-delay="0" rotation-per-second="18deg"
   interaction-prompt="none" shadow-intensity="1" shadow-softness="0.8" exposure="1.05"
   environment-image="neutral" camera-orbit="35deg 75deg auto" min-camera-orbit="auto auto 5%"
   ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" ar-placement="floor">
